@@ -1,0 +1,10 @@
+CREATE TABLE users (
+user_id SERIAL PRIMARY KEY,
+email varchar(255) UNIQUE NOT NULL,
+);
+
+CREATE TABLE sequences (
+    sequence_id SERIAL PRIMARY KEY,
+    json_sequence json NOT NULL,
+    user_id int REFERENCES users(user_id)
+);
