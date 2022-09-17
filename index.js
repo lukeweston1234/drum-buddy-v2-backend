@@ -6,7 +6,9 @@ const app = express();
 
 const login = require("./routes/login");
 
-const whiteList = ["https://drumbuddy.io"];
+const sequences = require("./routes/sequences");
+
+const whiteList = ["http://localhost:3000", "https://drumbuddy.io"];
 
 app.use(
   cors({
@@ -23,5 +25,7 @@ app.use(
 app.listen(PORT);
 
 app.use("/api/login", login);
+
+app.use("/api/sequences", sequences);
 
 console.log(`listening on port ${PORT}`);
