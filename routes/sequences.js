@@ -23,6 +23,7 @@ router.post("/", googleAuth, async (req, res) => {
       .status(400)
       .json({ error: "Could not post sequence with given data" });
   } catch (error) {
+    console.log(error);
     return res.status(400).send("Invalid Query");
   }
 });
