@@ -11,7 +11,7 @@ router.post("/", googleAuth, async (req, res) => {
     const query = `
     INSERT INTO sequences (json_sequence, users.user_id)
     VALUES ($1,
-    (SELECT user_id FROM users WHERE users.email = $3)
+    (SELECT user_id FROM users WHERE users.email = $2)
     ) 
     RETURNING *
     `;
