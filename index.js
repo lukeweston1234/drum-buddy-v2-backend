@@ -6,7 +6,7 @@ const app = express();
 
 const login = require("./routes/login");
 
-const whiteList = ["http://localhost:3000", "https://drumbuddy.io"];
+const whiteList = ["https://drumbuddy.io"];
 
 app.use(
   cors({
