@@ -6,16 +6,24 @@ const googleAuth = require("../middlware/googleAuth");
 
 router.post("/", googleAuth, async (req, res) => {
   try {
-    const sequence = req.body;
+    const sequence = req.body.sequence;
+    let name = req.body.sequenceName;
+    if (!name) {
+      name = "Default";
+    }
     const email = req.email;
     const query = `
-    INSERT INTO sequences (json_sequence, users.user_id)
-    VALUES ($1,
-    (SELECT user_id FROM users WHERE users.email = $2)
-    ) 
+    INSERT INTO sequences (json_sequence, sequence_name, user_id)
+    VALUES ($1, $2,
+    (SELECT users.user_id FROM users WHERE users.email = $3)
+    )
     RETURNING *
     `;
-    const { rows } = await db.query(query, [sequence, email]);
+    const { rows } = await db.query(query, [
+      JSON.stringify(sequence),
+      name,
+      email,
+    ]);
     if (rows) {
       return res.status(201).json({ id: rows[0].sequence_id });
     }
@@ -32,8 +40,9 @@ router.get("/:id", async (req, res) => {
   try {
     const sequenceID = req.params.id;
     const query = `
-    SELECT * FROM sequences
-    WHERE sequences.sequence_id = $1
+    SELECT * 
+    FROM sequences
+    WHERE sequence_id = $1
     `;
     const { rows } = await db.query(query, [sequenceID]);
     if (rows) {
@@ -43,6 +52,26 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).send("Could Not Find Sequence ID");
+  }
+});
+
+router.get("/users/:userID", async (req, res) => {
+  try {
+    const userID = req.params.userID;
+    const query = `
+    SELECT * FROM sequences
+    INNER JOIN users 
+    ON sequences.user_id = users.user_id
+    WHERE sequences.user_id = $1
+    `;
+    const { rows } = await db.query(query, [userID]);
+    if (rows) {
+      return res.status(200).json(rows);
+    }
+    return res.status(400).send("Could Not Find Posts");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send("Could Not Find User");
   }
 });
 
