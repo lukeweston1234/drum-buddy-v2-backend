@@ -10,17 +10,15 @@ const sequences = require("./routes/sequences");
 
 const whiteList = ["http://localhost:3000", "https://drumbuddy.io"];
 
-app.use(cors());
-// cors({
-//   origin: (origin, callback) => {
-//     if (whiteList.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-// })
-//);
+cors({
+  origin: (origin, callback) => {
+    if (whiteList.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+});
 
 app.listen(PORT);
 
