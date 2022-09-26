@@ -75,4 +75,26 @@ router.get("/users/:userID", async (req, res) => {
   }
 });
 
+router.delete("/sequences/:sequenceID", googleAuth, async (req, res) => {
+  try {
+    const sequenceID = req.params.sequenceID;
+    const email = req.email;
+    const query = `
+    DELETE 
+    FROM sequences
+    USING users
+    WHERE sequences.sequence_id = $1 AND users.email = $2
+    RETURNING * 
+    `;
+    const { rows } = await db.query(query, [sequenceID, email]);
+    if (rows) {
+      return res.status(200).send("Sequence Deleted");
+    }
+    return res.status(400).send("Could not delete sequence");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Database error");
+  }
+});
+
 module.exports = router;
