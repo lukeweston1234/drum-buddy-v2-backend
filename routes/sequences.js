@@ -75,7 +75,7 @@ router.get("/users/:userID", async (req, res) => {
   }
 });
 
-router.delete("/sequences/:sequenceID", googleAuth, async (req, res) => {
+router.delete("/sequenceID", googleAuth, async (req, res) => {
   try {
     const sequenceID = req.params.sequenceID;
     const email = req.email;
