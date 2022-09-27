@@ -6,7 +6,7 @@ const googleAuth = require("../middlware/googleAuth");
 
 router.post("/", googleAuth, async (req, res) => {
   try {
-    const email = req.body.email;
+    const email = req.email;
     const query = `
     SELECT * FROM users 
     WHERE email = $1
@@ -17,7 +17,7 @@ router.post("/", googleAuth, async (req, res) => {
     }
   } catch (error) {
     try {
-      const email = req.body.email;
+      const email = req.email;
       const query = `
       INSERT INTO users (email)
       VALUES ($1)
