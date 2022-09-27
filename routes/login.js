@@ -12,7 +12,7 @@ router.post("/", googleAuth, async (req, res) => {
     WHERE email = $1
     `;
     const { rows } = await db.query(query, [email]);
-    if (rows) {
+    if (rows[0]) {
       return res.status(200).json(rows[0]);
     }
   } catch (error) {
@@ -25,7 +25,7 @@ router.post("/", googleAuth, async (req, res) => {
       `;
       const { rows } = await db.query(query, email);
       console.log(rows);
-      if (rows) {
+      if (rows[0]) {
         return res.status(201).send("User Added");
       } else {
         return res.status(500).send("Could not add User");

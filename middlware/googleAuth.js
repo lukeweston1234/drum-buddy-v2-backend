@@ -5,6 +5,7 @@ const client = new OAuth2Client();
 
 const googleAuth = async (req, res, next) => {
   try {
+    console.log(req.body);
     let token = "";
     if (req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
