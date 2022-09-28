@@ -5,12 +5,11 @@ const client = new OAuth2Client();
 
 const googleAuth = async (req, res, next) => {
   try {
-    console.log(req.body);
     let token = "";
     if (req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
     } else {
-      token = req.body.credential;
+      token = req.body;
     }
     const ticket = await client.verifyIdToken({
       idToken: token,
